@@ -158,7 +158,7 @@ Game.Play = function() {
                     touchEnd: function() {
                         game.input.up = null;
                     }
-                }
+                },
 				down: {
 				touchStart: function(dpad_details) {
                         game.input.down = dpad_details;
@@ -169,7 +169,7 @@ Game.Play = function() {
                     touchEnd: function() {
                         game.input.down = null;
                     }
-				}
+				},
 				left:{
 				touchStart: function(dpad_details) {
                         game.input.left = dpad_details;
@@ -180,7 +180,7 @@ Game.Play = function() {
                     touchEnd: function() {
                         game.input.left = null;
                     }
-				}
+				},
 				right:{
 				touchStart: function(dpad_details) {
                         game.input.right = dpad_details;
@@ -191,8 +191,8 @@ Game.Play = function() {
                     touchEnd: function() {
                         game.input.right = null;
                     }
-				}
-            }
+				},
+            },
         });
     };
 
