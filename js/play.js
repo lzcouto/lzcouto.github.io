@@ -284,7 +284,7 @@ Game.Play = function() {
 	    this.player.body.velocity.x = 0;
         if (game.input.joystickRight) {
 			this.player.body.velocity.x = game.input.joystickRight.normalizedX * 500;
-			this.player.body.velocity.y = game.input.joystickRight.normalizedY * 500;
+			this.player.body.velocity.y = game.input.joystickRight.normalizedY * 500 * -1;
         }
     };
 
