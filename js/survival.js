@@ -11,6 +11,7 @@ Game.Survival = function(game) {
         this.createRandomPlatforms(3000, 300, 'platformMetal');
         this.createPlayer(15, 300);
         this.createControls();
+        this.createJoystick();
         this.createTrophy(2950, 50);
         this.createCamera(this.player);
         this.survive = game.add.sprite(game.camera.x + 260, game.camera.y + 75, 'survive');
@@ -32,6 +33,7 @@ Game.Survival = function(game) {
         this.createCollision(this.trophy, this.ledges);
         this.createCollision(this.trophy, this.platforms);
         this.createCollision(this.player, this.trophy, this.implying);
+        this.playerMovementJoy();
         this.playerMovement();
         this.collideLeftRight();
 

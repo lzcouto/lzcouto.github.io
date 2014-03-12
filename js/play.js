@@ -1,9 +1,9 @@
 Game.Play = function() {
     this.currentState;
     this.moving;
-     
+
     this.createStage = function(width, height, background, platform) {
-        
+
         game.world.setBounds(0, 0, width, height);
 
         for (var i = 0; i < width; i = i + 800) {
@@ -19,7 +19,7 @@ Game.Play = function() {
     };
 
     this.createTrophy = function(spawnWidth, spawnHeight) {
-       
+
         this.trophy = game.add.sprite(spawnWidth, spawnHeight, 'trophy');
         this.trophy.body.gravity.y = 40;
         this.trophy.body.collideWorldBounds = true;
@@ -36,7 +36,7 @@ Game.Play = function() {
         this.player.body.collideWorldBounds = false;
         this.player.animations.add('left', [0, 1, 2, 3], 10, true);
         this.player.animations.add('right', [5, 6, 7, 8], 10, true);
-        this.player.body.setPolygon(5,10,25,10,21,25,21,38,8,38,9,25);
+        this.player.body.setPolygon(5, 10, 25, 10, 21, 25, 21, 38, 8, 38, 9, 25);
 
     };
 
@@ -44,7 +44,7 @@ Game.Play = function() {
         this.enemies = game.add.group();
         for (var i = 0; i < number; i++) {
             var enemy = this.enemies.create((Math.random() * width) + 300, Math.random() * 300, sprite);
-         //   enemy.body.bounce.y = 31.0;
+            //   enemy.body.bounce.y = 31.0;
             //  enemy.body.collideWorldBounds = true;
             // enemy.body.gravity.y = -10;
             //  enemy.body.acceleration.y = 400;
@@ -140,6 +140,29 @@ Game.Play = function() {
     };
 
 
+    this.createJoystick = function() {
+        GameController.init({
+            left: {
+                type: 'none'
+
+            },
+            right: {
+                type: 'joystick',
+                joystick: {
+                    touchStart: function() {
+                        // Don't need this, but the event is here if you want it.
+                    },
+                    touchMove: function(joystick_details) {
+                        game.input.joystickRight = joystick_details;
+                    },
+                    touchEnd: function() {
+                        game.input.joystickRight = null;
+                    }
+                }
+            }
+        });
+    };
+
     this.createControls = function() {
         cursors = game.input.keyboard.createCursorKeys();
     };
@@ -154,20 +177,20 @@ Game.Play = function() {
         }
 
     };
-    
-    this.implying = function(player, trophy){
-        if(this.location === 1){
+
+    this.implying = function(player, trophy) {
+        if (this.location === 1) {
             trophy.kill();
             mult++;
-            this.createTrophy(10,50);
+            this.createTrophy(10, 50);
             this.location = 2;
-             this.ledges.setAll('health', 2);
-        }else if(this.location === 2){
+            this.ledges.setAll('health', 2);
+        } else if (this.location === 2) {
             trophy.kill();
             mult++;
-            this.createTrophy(2990,50);
+            this.createTrophy(2990, 50);
             this.location = 1;
-             this.ledges.setAll('health', 2);
+            this.ledges.setAll('health', 2);
         }
     };
 
@@ -181,17 +204,17 @@ Game.Play = function() {
         }
     };
 
-    this.killPlayer = function(player,enemy) {
-       if (this.player.body.touching.down && enemy.body.touching.up)
-            {
-                enemy.kill();
-                this.enemies.remove(enemy);
-                this.enemies.create((Math.random() * 2990) + 100, Math.random() * 300, 'enemy');
-                this.collectText("+" + 1000 * mult);
-                time += 1000 * mult;
-                return;
-            }
-       
+    this.killPlayer = function(player, enemy) {
+        if (this.player.body.touching.down && enemy.body.touching.up)
+        {
+            enemy.kill();
+            this.enemies.remove(enemy);
+            this.enemies.create((Math.random() * 2990) + 100, Math.random() * 300, 'enemy');
+            this.collectText("+" + 1000 * mult);
+            time += 1000 * mult;
+            return;
+        }
+
         this.player.alive = false;
         this.player.kill();
     };
@@ -201,16 +224,17 @@ Game.Play = function() {
         this.enemies.getRandom().kill();
     };
 
-    this.platformPoints = function(player, ledger){
-      if((this.player.body.touching.down) && (ledger.body.touching.up) && (ledger.health === 2)){
+    this.platformPoints = function(player, ledger) {
+        if ((this.player.body.touching.down) && (ledger.body.touching.up) && (ledger.health === 2)) {
             ledger.health = 1;
             var temp = ((this.roundTo10(game.world.height - this.player.y) / 10) / 2) * mult;
             var temp = parseInt(temp);
             this.collectText(temp);
             time += temp;
-      };  
+        }
+        ;
     };
-    
+
     this.killAllEnemies = function() {
         this.enemies.callAll('kill');
     };
@@ -242,18 +266,27 @@ Game.Play = function() {
         game.add.tween(textCollect)
                 .to({alpha: 1, y: this.player.y - 40}, 400, Phaser.Easing.Linear.None, true)
                 .onComplete.add(this.clearCollect, this);
-        
+
     };
-    
-    this.roundTo10 = function(number){
+
+    this.roundTo10 = function(number) {
         var temp = number / 10;
         Math.round(temp);
-        temp *=temp * 10;
+        temp *= temp * 10;
         return temp;
     };
-    
+
     this.clearCollect = function() {
         this.texts.removeAll();
+    };
+
+    this.playerMovementJoy = function() {
+        if (game.input.joystickRight) {
+            this.player.body.velocity.setTo(game.input.joystickRight.normalizedX * 500, game.input.joystickRight.normalizedY * 500 * -1);
+        }
+        else {
+            this.player.body.velocity.setTo(0, 0);
+        }
     };
 
     this.playerMovement = function() {
