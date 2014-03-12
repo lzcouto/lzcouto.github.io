@@ -148,10 +148,12 @@ Game.Play = function() {
             },
             right: {
                 type: 'dpad',
-                up:{touchStart: function(){game.input.up = true;}, touchEnd: function(){game.input.up = false;}},
-				down:{touchStart: function(){game.input.down = true;}, touchEnd: function(){game.input.down = false;}},
-				left:{touchStart: function(){game.input.left = true;}, touchEnd: function(){game.input.left = false;}},
-				right:{touchStart: function(){game.input.right = true;}, touchEnd: function(){game.input.right = false;}}
+				dpad: {
+					up:{touchStart: function(){game.input.up = true;}, touchEnd: function(){game.input.up = false;}},
+					down:{touchStart: function(){game.input.down = true;}, touchEnd: function(){game.input.down = false;}},
+					left:{touchStart: function(){game.input.left = true;}, touchEnd: function(){game.input.left = false;}},
+					right:{touchStart: function(){game.input.right = true;}, touchEnd: function(){game.input.right = false;}}
+				}
             }
         });
     };
