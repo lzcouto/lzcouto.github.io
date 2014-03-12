@@ -147,18 +147,51 @@ Game.Play = function() {
 
             },
             right: {
-                type: 'joystick',
-                joystick: {
-                    touchStart: function() {
-                        // Don't need this, but the event is here if you want it.
+                type: 'dpad',
+                up: {
+                    touchStart: function(dpad_details) {
+                        game.input.up = dpad_details;
                     },
-                    touchMove: function(joystick_details) {
-                        game.input.joystickRight = joystick_details;
+                    touchMove: function() {
+                        
                     },
                     touchEnd: function() {
-                        game.input.joystickRight = null;
+                        game.input.up = null;
                     }
                 }
+				down: {
+				touchStart: function(dpad_details) {
+                        game.input.down = dpad_details;
+                    },
+                    touchMove: function() {
+                        
+                    },
+                    touchEnd: function() {
+                        game.input.down = null;
+                    }
+				}
+				left:{
+				touchStart: function(dpad_details) {
+                        game.input.left = dpad_details;
+                    },
+                    touchMove: function() {
+                        
+                    },
+                    touchEnd: function() {
+                        game.input.left = null;
+                    }
+				}
+				right:{
+				touchStart: function(dpad_details) {
+                        game.input.right = dpad_details;
+                    },
+                    touchMove: function() {
+                        
+                    },
+                    touchEnd: function() {
+                        game.input.right = null;
+                    }
+				}
             }
         });
     };
@@ -282,9 +315,36 @@ Game.Play = function() {
 
     this.playerMovementJoy = function() {
 	    this.player.body.velocity.x = 0;
-        if (game.input.joystickRight) {
-			this.player.body.velocity.x = game.input.joystickRight.normalizedX * 500;
-			this.player.body.velocity.y = game.input.joystickRight.normalizedY * 500 * -1;
+        if (game.input.left)
+        {
+            this.player.body.velocity.x = -500;
+            this.player.animations.play('left');
+            this.moving = true;
+        }
+        else if (game.input.right)
+        {
+            this.player.body.velocity.x = 500;
+            this.player.animations.play('right');
+            this.moving = true;
+
+        }
+        else
+        {
+            this.player.animations.stop();
+            this.player.frame = 4;
+            this.moving = false;
+        }
+
+        if (game.input.up && this.player.body.touching.down)
+        {
+            this.player.body.velocity.y = -700;
+            this.moving = true;
+        }
+
+        if (game.input.down)
+        {
+            this.player.body.velocity.y = 700;
+            this.moving = false;
         }
     };
 
