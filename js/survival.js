@@ -10,7 +10,7 @@ Game.Survival = function(game) {
         this.createStage(3000, 399, 'backgroundMetal', 'groundMetal');
         this.createRandomPlatforms(3000, 300, 'platformMetal');
         this.createPlayer(15, 300);
-        this.createControls();
+      //  this.createControls();
         this.createJoystick();
         this.createTrophy(2950, 50);
         this.createCamera(this.player);
@@ -34,7 +34,7 @@ Game.Survival = function(game) {
         this.createCollision(this.trophy, this.platforms);
         this.createCollision(this.player, this.trophy, this.implying);
         this.playerMovementJoy();
-        this.playerMovement();
+     //   this.playerMovement();
         this.collideLeftRight();
 
 
