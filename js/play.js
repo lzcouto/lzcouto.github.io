@@ -149,44 +149,44 @@ Game.Play = function() {
             right: {
                 type: 'dpad',
                 up: {
-                    touchStart: function(dpad_details) {
-                        game.input.up = dpad_details;
+                    touchStart: function() {
+                        game.input.up = true;
                     },
                     touchMove: function() {
-                        
+                        game.input.up = true;
                     },
                     touchEnd: function() {
                         game.input.up = null;
                     }
                 },
 				down: {
-				touchStart: function(dpad_details) {
-                        game.input.down = dpad_details;
+				touchStart: function() {
+                        game.input.down = true;
                     },
                     touchMove: function() {
-                        
+                        game.input.down = true;
                     },
                     touchEnd: function() {
                         game.input.down = null;
                     }
 				},
 				left:{
-				touchStart: function(dpad_details) {
-                        game.input.left = dpad_details;
+				touchStart: function() {
+                        game.input.left = true;
                     },
                     touchMove: function() {
-                        
+                        game.input.left = true;
                     },
                     touchEnd: function() {
                         game.input.left = null;
                     }
 				},
 				right:{
-				touchStart: function(dpad_details) {
-                        game.input.right = dpad_details;
+				touchStart: function() {
+                        game.input.right = true;
                     },
                     touchMove: function() {
-                        
+                        game.input.right = true;
                     },
                     touchEnd: function() {
                         game.input.right = null;
