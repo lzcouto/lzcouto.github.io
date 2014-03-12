@@ -281,11 +281,10 @@ Game.Play = function() {
     };
 
     this.playerMovementJoy = function() {
+	    this.player.body.velocity.x = 0;
         if (game.input.joystickRight) {
-            this.player.body.velocity.setTo(game.input.joystickRight.normalizedX * 500, game.input.joystickRight.normalizedY * 500 * -1);
-        }
-        else {
-            this.player.body.velocity.setTo(0, 0);
+			this.player.body.velocity.x = game.input.joystickRight.normalizedX * 500;
+			this.player.body.velocity.y = game.input.joystickRight.normalizedY * 500;
         }
     };
 
