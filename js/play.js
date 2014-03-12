@@ -148,51 +148,11 @@ Game.Play = function() {
             },
             right: {
                 type: 'dpad',
-                up: {
-                    touchStart: function() {
-                        game.input.up = true;
-                    },
-                    touchMove: function() {
-                        game.input.up = true;
-                    },
-                    touchEnd: function() {
-                        game.input.up = null;
-                    }
-                },
-				down: {
-				touchStart: function() {
-                        game.input.down = true;
-                    },
-                    touchMove: function() {
-                        game.input.down = true;
-                    },
-                    touchEnd: function() {
-                        game.input.down = null;
-                    }
-				},
-				left:{
-				touchStart: function() {
-                        game.input.left = true;
-                    },
-                    touchMove: function() {
-                        game.input.left = true;
-                    },
-                    touchEnd: function() {
-                        game.input.left = null;
-                    }
-				},
-				right:{
-				touchStart: function() {
-                        game.input.right = true;
-                    },
-                    touchMove: function() {
-                        game.input.right = true;
-                    },
-                    touchEnd: function() {
-                        game.input.right = null;
-                    }
-				},
-            },
+                up:{touchStart: function(){game.input.up = true;}, touchEnd: function(){game.input.up = false;}},
+				down:{touchStart: function(){game.input.down = true;}, touchEnd: function(){game.input.down = false;}},
+				left:{touchStart: function(){game.input.left = true;}, touchEnd: function(){game.input.left = false;}},
+				right:{touchStart: function(){game.input.right = true;}, touchEnd: function(){game.input.right = false;}}
+            }
         });
     };
 
