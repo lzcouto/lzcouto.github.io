@@ -9,12 +9,17 @@ Game.Play = function() {
         for (var i = 0; i < width; i = i + 800) {
             game.add.sprite(i, 0, background);
         }
+        /*
         this.platforms = game.add.group();
         for (var i = 0; i <= width; i = i + 50) {
             this.platforms.create(i, 370, platform);
         }
         this.platforms.setAll('body.immovable', true);
         this.platforms.setAll('body.collideWorldBounds', true);
+        */
+       this.platforms = game.add.sprite(0,370,platform);
+       this.platforms.body.immovable = true;
+       this.platforms.body.collideWorldBounds = true;
 
     };
 
@@ -89,7 +94,7 @@ Game.Play = function() {
         var WSTART = width * START_LEDGES_AREA;
 
         // determina a posicao x, y do primeiro ledge
-        var y = height - (Math.random() * height / 3.5);
+        var y = height - (Math.random() * height / 3);
         var x = WSTART;
         this.ledges = game.add.group();
         this.ledges.create(x, y, sprite);
@@ -139,8 +144,6 @@ Game.Play = function() {
         this.ledges.setAll('health', 2);
     };
 
-
-  
 
     this.createControls = function() {
         cursors = game.input.keyboard.createCursorKeys();
@@ -257,41 +260,6 @@ Game.Play = function() {
 
     this.clearCollect = function() {
         this.texts.removeAll();
-    };
-
-    this.playerMovementJoy = function() {
-	    this.player.body.velocity.x = 0;
-        if (game.input.left)
-        {
-            this.player.body.velocity.x = -500;
-            this.player.animations.play('left');
-            this.moving = true;
-        }
-        else if (game.input.right)
-        {
-            this.player.body.velocity.x = 500;
-            this.player.animations.play('right');
-            this.moving = true;
-
-        }
-        else
-        {
-            this.player.animations.stop();
-            this.player.frame = 4;
-            this.moving = false;
-        }
-
-        if (game.input.up && this.player.body.touching.down)
-        {
-            this.player.body.velocity.y = -700;
-            this.moving = true;
-        }
-
-        if (game.input.down)
-        {
-            this.player.body.velocity.y = 700;
-            this.moving = false;
-        }
     };
 
     this.playerMovement = function() {

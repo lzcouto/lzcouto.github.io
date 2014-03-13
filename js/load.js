@@ -20,21 +20,6 @@ Game.Boot = function(game) {
     };
 
     this.create = function() {
-        GameController.init({
-            left: {
-                type: 'none'
-
-            },
-            right: {
-                type: 'dpad',
-				dpad: {
-					up:{touchStart: function(){game.input.up = true;}, touchEnd: function(){game.input.up = false;}},
-					down:{touchStart: function(){game.input.down = true;}, touchEnd: function(){game.input.down = false;}},
-					left:{touchStart: function(){game.input.left = true;}, touchEnd: function(){game.input.left = false;}},
-					right:{touchStart: function(){game.input.right = true;}, touchEnd: function(){game.input.right = false;}}
-				}
-            }
-        });
         var bg = game.add.sprite(0, 0, 'bg');
         var logo = game.add.sprite(250, 40, 'logo');
         logo.alpha = 0;
@@ -66,6 +51,7 @@ Game.Load = function(game) {
         game.load.image('enemy', 'assets/ufo.png');
         game.load.image('ground', 'assets/ground.png');
         game.load.image('groundMetal', 'assets/groundStreet.png');
+        game.load.image('groundMetalFull', 'assets/groundStreetFull.png');
         game.load.image('platform', 'assets/platform.png');
         game.load.image('platformMetal','assets/platformMetal.png');
         game.load.image('buttonSurvival', 'assets/survival-button.png');
