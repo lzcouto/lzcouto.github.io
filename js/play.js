@@ -75,7 +75,7 @@ Game.Play = function() {
         var START_LEDGES_AREA = 0.1;
 
         // determina a altura maxima do salto em pixels
-        var JMP_HEIGHT = 120;
+        var JMP_HEIGHT = 80;
 
         // determina a probabilidade de criar um ledge
         // onde a probabilidalidade real é 1 - PROB
@@ -83,7 +83,7 @@ Game.Play = function() {
 
         // gap max/min no eixo Y para se criar um ledge
         // em relacao ao ledge anterior
-        var GAP = 42;
+        var GAP = 45;
 
         // determina as dimensoes do sprite
         var WSPRITE = 150;
@@ -196,7 +196,14 @@ Game.Play = function() {
             time += 1000 * mult;
             return;
         }
-
+        
+         var gameover = game.add.sprite(game.camera.x + 260, game.camera.y + 75, 'gameOver');
+            gameover.alpha = 0;
+            game.add.tween(gameover)
+                    .to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true)
+                    .onComplete.add(function() {
+                        stateChange = true;
+                    });
         this.player.alive = false;
         this.player.kill();
     };
@@ -231,8 +238,7 @@ Game.Play = function() {
         if (this.player.x < this.player._cache.halfWidth) {
             this.player.x += 1;
             this.player.body.velocity.x *= this.player.body.bounce.x * 10000;
-        }
-        if (this.player.x > game.world.width - this.player._cache.width) {
+        } else if (this.player.x > game.world.width - this.player._cache.width) {
             this.player.x -= 1;
             this.player.body.velocity.x *= -this.player.body.bounce.x * 10000;
         }
