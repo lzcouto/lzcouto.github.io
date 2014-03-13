@@ -140,23 +140,7 @@ Game.Play = function() {
     };
 
 
-    this.createJoystick = function() {
-        GameController.init({
-            left: {
-                type: 'none'
-
-            },
-            right: {
-                type: 'dpad',
-				dpad: {
-					up:{touchStart: function(){game.input.up = true;}, touchEnd: function(){game.input.up = false;}},
-					down:{touchStart: function(){game.input.down = true;}, touchEnd: function(){game.input.down = false;}},
-					left:{touchStart: function(){game.input.left = true;}, touchEnd: function(){game.input.left = false;}},
-					right:{touchStart: function(){game.input.right = true;}, touchEnd: function(){game.input.right = false;}}
-				}
-            }
-        });
-    };
+  
 
     this.createControls = function() {
         cursors = game.input.keyboard.createCursorKeys();

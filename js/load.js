@@ -20,6 +20,21 @@ Game.Boot = function(game) {
     };
 
     this.create = function() {
+        GameController.init({
+            left: {
+                type: 'none'
+
+            },
+            right: {
+                type: 'dpad',
+				dpad: {
+					up:{touchStart: function(){game.input.up = true;}, touchEnd: function(){game.input.up = false;}},
+					down:{touchStart: function(){game.input.down = true;}, touchEnd: function(){game.input.down = false;}},
+					left:{touchStart: function(){game.input.left = true;}, touchEnd: function(){game.input.left = false;}},
+					right:{touchStart: function(){game.input.right = true;}, touchEnd: function(){game.input.right = false;}}
+				}
+            }
+        });
         var bg = game.add.sprite(0, 0, 'bg');
         var logo = game.add.sprite(250, 40, 'logo');
         logo.alpha = 0;
