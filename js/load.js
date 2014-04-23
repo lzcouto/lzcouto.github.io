@@ -2,6 +2,7 @@ var gameState = 0;
 var stateChange = false;
 var time = 0;
 var mult = 1;
+var timeP = new Date();
 Game = {};
 
 //Game.Boot = function (game) { };

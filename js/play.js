@@ -5,29 +5,33 @@ Game.Play = function() {
     this.createStage = function(width, height, background, platform) {
 
         game.world.setBounds(0, 0, width, height);
-
+        
         for (var i = 0; i < width; i = i + 800) {
             game.add.sprite(i, 0, background);
         }
         /*
-        this.platforms = game.add.group();
-        for (var i = 0; i <= width; i = i + 50) {
-            this.platforms.create(i, 370, platform);
-        }
-        this.platforms.setAll('body.immovable', true);
-        this.platforms.setAll('body.collideWorldBounds', true);
-        */
-       this.platforms = game.add.sprite(0,370,platform);
-       this.platforms.body.immovable = true;
-       this.platforms.body.collideWorldBounds = true;
+         this.platforms = game.add.group();
+         for (var i = 0; i <= width; i = i + 50) {
+         this.platforms.create(i, 370, platform);
+         }
+         this.platforms.setAll('body.immovable', true);
+         this.platforms.setAll('body.collideWorldBounds', true);
+         */
+
+        this.platforms = game.add.sprite(0, 370, platform);
+        game.physics.enable(this.platforms, Phaser.Physics.ARCADE);
+        this.platforms.body.immovable = true;
+        this.platforms.body.collideWorldBounds = true;
 
     };
 
     this.createTrophy = function(spawnWidth, spawnHeight) {
 
         this.trophy = game.add.sprite(spawnWidth, spawnHeight, 'trophy');
-        this.trophy.body.gravity.y = 40;
-        this.trophy.body.collideWorldBounds = true;
+        game.physics.enable(this.trophy, Phaser.Physics.ARCADE);
+        this.trophy.body.gravity.y = 600;
+        this.trophy.body.acceleration.y = 1000;
+        //this.trophy.body.collideWorldBounds = true;
         this.trophy.animations.add('spin', [0, 1, 2, 3, 4, 5], 10, true);
         this.trophy.animations.play('spin');
     };
@@ -35,25 +39,29 @@ Game.Play = function() {
 
     this.createPlayer = function(spawnWidth, spawnHeight) {
         this.player = game.add.sprite(spawnWidth, spawnHeight, 'dude');
+        game.physics.enable(this.player, Phaser.Physics.ARCADE);
         this.player.alive = true;
         this.player.body.gravity.y = 600;
         this.player.body.acceleration.y = 1000;
-        this.player.body.collideWorldBounds = false;
+        this.player.body.collideWorldBounds = true;
+        this.player.body.drag.setTo(400,-400);
         this.player.animations.add('left', [0, 1, 2, 3], 10, true);
         this.player.animations.add('right', [5, 6, 7, 8], 10, true);
-        this.player.body.setPolygon(5, 10, 25, 10, 21, 25, 21, 38, 8, 38, 9, 25);
+   //     this.player.body.setPolygon(5, 10, 25, 10, 21, 25, 21, 38, 8, 38, 9, 25);
 
     };
 
     this.createEnemies = function(number, width, sprite) {
         this.enemies = game.add.group();
+        this.enemies.enableBody = true;
         for (var i = 0; i < number; i++) {
             var enemy = this.enemies.create((Math.random() * width) + 300, Math.random() * 300, sprite);
+
             //   enemy.body.bounce.y = 31.0;
             //  enemy.body.collideWorldBounds = true;
             // enemy.body.gravity.y = -10;
             //  enemy.body.acceleration.y = 400;
-            /*               game.add.tween(enemy)
+           /* game.add.tween(enemy)
              .to({x: Math.random() * 3100}, 1000, Phaser.Easing.Linear.None)
              .to({x: Math.random() * 3100}, 1000, Phaser.Easing.Linear.None)
              .to({x: Math.random() * 3100}, 1000, Phaser.Easing.Linear.None)
@@ -61,6 +69,18 @@ Game.Play = function() {
              .to({x: Math.random() * 3100}, 1000, Phaser.Easing.Linear.None)
              .start();*/
         }
+        
+       // this.enemies.setAll('body.bounce.y',31.0);
+        this.enemies.setAll('body.collideWorldBounds',true);
+        this.enemies.setAll('body.gravity', -50);
+       this.enemies.setAll('body.acceleration.y',1000);
+    };
+    
+    this.addOneEnemy = function(){
+        this.enemies.create((Math.random() * 2990) + 300, Math.random() * 300, 'enemy');
+         this.enemies.setAll('body.collideWorldBounds',true);
+        this.enemies.setAll('body.gravity', -50);
+       this.enemies.setAll('body.acceleration.y',1000);
     };
 
 
@@ -94,9 +114,10 @@ Game.Play = function() {
         var WSTART = width * START_LEDGES_AREA;
 
         // determina a posicao x, y do primeiro ledge
-        var y = height - (Math.random() * height / 3);
+        var y = height - (Math.random() * height / 3) + GAP;
         var x = WSTART;
         this.ledges = game.add.group();
+        this.ledges.enableBody = true;
         this.ledges.create(x, y, sprite);
 
         lastX = x;
@@ -125,6 +146,7 @@ Game.Play = function() {
                 // cria o ledge do canvas
                 this.ledges.create(x, y, sprite);
 
+
                 // cria um backup da posição gerada
                 lastX = x;
                 lastY = y;
@@ -137,8 +159,11 @@ Game.Play = function() {
             // onde se decrementa a altura do salto em relação a posicao do ultimo ledge
             var min = (lastY - JMP_HEIGHT);
             y = Math.random() * (height - min) + min;
+            if(y < 100)
+                y += 100;
         }
 
+       
         this.ledges.setAll('body.immovable', true);
         this.ledges.setAll('body.collideWorldBounds', true);
         this.ledges.setAll('health', 2);
@@ -153,9 +178,9 @@ Game.Play = function() {
     this.createCollision = function(object1, object2, func) {
         if (func)
         {
-            game.physics.collide(object1, object2, func, null, this);
+            game.physics.arcade.collide(object1, object2, func, null, this);
         } else {
-            game.physics.collide(object1, object2);
+            game.physics.arcade.collide(object1, object2);
         }
 
     };
@@ -170,7 +195,7 @@ Game.Play = function() {
         } else if (this.location === 2) {
             trophy.kill();
             mult++;
-            this.createTrophy(2990, 50);
+            this.createTrophy(2950, 50);
             this.location = 1;
             this.ledges.setAll('health', 2);
         }
@@ -178,35 +203,57 @@ Game.Play = function() {
 
 
     this.createOverlap = function(object1, object2, func) {
-        if (func)
+        if(func)
         {
-            game.physics.collide(object1, object2, func, null, this);
+            game.physics.arcade.overlap(object1, object2, func, null, this);
         } else {
-            game.physics.overlap(object1, object2);
+            game.physics.arcade.overlap(object1, object2);
         }
     };
 
-    this.killPlayer = function(player, enemy) {
-        if (this.player.body.touching.down && enemy.body.touching.up)
+    this.killPlayerCasual = function(player, enemy) {
+        if (player.body.touching.down && enemy.body.touching.up)
         {
             enemy.kill();
-            this.enemies.remove(enemy);
             this.enemies.create((Math.random() * 2990) + 100, Math.random() * 300, 'enemy');
             this.collectText("+" + 1000 * mult);
             time += 1000 * mult;
+            player.body.velocity.y = -700;
             return;
+        }else{
+        var gameover = game.add.sprite(game.camera.x + 260, game.camera.y + 75, 'gameOver');
+        gameover.alpha = 0;
+        game.add.tween(gameover)
+                .to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true)
+                .onComplete.add(function() {
+                    stateChange = true;
+                });
+        player.alive = false;
+        player.kill();
         }
-        
-         var gameover = game.add.sprite(game.camera.x + 260, game.camera.y + 75, 'gameOver');
-            gameover.alpha = 0;
-            game.add.tween(gameover)
-                    .to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true)
-                    .onComplete.add(function() {
-                        stateChange = true;
-                    });
-        this.player.alive = false;
-        this.player.kill();
     };
+    
+    this.killPlayerSurvival = function(player, enemy){
+        if (player.body.touching.down && enemy.body.touching.up)
+        {
+            enemy.kill();
+            this.enemies.create((Math.random() * 2990) + 100, Math.random() * 300, 'enemy');
+            this.collectText("KILL");
+            player.body.velocity.y = -700;
+            return;
+        }else{
+        time = timeP;
+        var gameover = game.add.sprite(game.camera.x + 260, game.camera.y + 75, 'gameOver');
+        gameover.alpha = 0;
+        game.add.tween(gameover)
+                .to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true)
+                .onComplete.add(function() {
+                    stateChange = true;
+                });
+        player.alive = false;
+        player.kill();
+        }
+    }
 
 
     this.killEnemiy = function() {
@@ -234,18 +281,6 @@ Game.Play = function() {
         game.context.fillText(text, x, y);
     };
 
-    this.collideLeftRight = function() {
-        if (this.player.x < this.player._cache.halfWidth) {
-            this.player.x += 1;
-            this.player.body.velocity.x *= this.player.body.bounce.x * 10000;
-        } else if (this.player.x > game.world.width - this.player._cache.width) {
-            this.player.x -= 1;
-            this.player.body.velocity.x *= -this.player.body.bounce.x * 10000;
-        }
-
-    };
-
-
     this.collectText = function(text) {
         var style = {font: "10pt Arial", fill: "#ffffff", align: "center"};
         var textCollect = game.add.text(this.player.x, this.player.y - 10, text, style);
@@ -270,7 +305,7 @@ Game.Play = function() {
 
     this.playerMovement = function() {
         this.player.body.velocity.x = 0;
-
+        
         if (cursors.left.isDown)
         {
             this.player.body.velocity.x = -500;
